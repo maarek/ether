@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/maarek/ether.svg?branch=master)](https://travis-ci.org/maarek/ether)
+[![Build Status](https://api.travis-ci.org/maarek/ether.svg?branch=master)](https://travis-ci.org/maarek/ether) | [![Inline docs](http://inch-ci.org/github/maarek/ether.svg?branch=develop)](http://inch-ci.org/github/maarek/ether)
 
 Ether
 =====
