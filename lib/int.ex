@@ -68,8 +68,6 @@ defmodule Int do
     iex> Int.i(Int)
     {:module, Int}
   """
-
-
   def i(absMods), do: i2(absMods, :local, :ok)
   def i(absMods, _options), do: i2(absMods, :local, :ok)
   def ni(absMods), do: i2(absMods, :distributed, :ok)
@@ -142,17 +140,19 @@ defmodule Int do
     end
   end
 
-# %%--------------------------------------------------------------------
-# %% auto_attach() -> false | {Flags, Function}
-# %% auto_attach(false)
-# %% auto_attach(false|Flags, Function)
-# %%   Flags = Flag | [Flag]
-# %%     Flag = init | break | exit
-# %%   Function = {Mod, Func} | {Mod, Func, Args}
-# %% Will result in calling:
-# %%  spawn(Mod, Func, [Dist, Pid, Meta | Args]) (living process) or
-# %%  spawn(Mod, Func, [Dist, Pid, Reason, Info | Args]) (dead process)
-# %%--------------------------------------------------------------------
+  @doc """
+  --------------------------------------------------------------------
+  auto_attach() -> false | {Flags, Function}
+  auto_attach(false)
+  auto_attach(false|Flags, Function)
+    Flags = Flag | [Flag]
+      Flag = init | break | exit
+    Function = {Mod, Func} | {Mod, Func, Args}
+  Will result in calling:
+    spawn(Mod, Func, [Dist, Pid, Meta | Args]) (living process) or
+    spawn(Mod, Func, [Dist, Pid, Reason, Info | Args]) (dead process)
+  --------------------------------------------------------------------
+  """
   def auto_attach(), do: :int.auto_attach()
 
   def auto_attach(false), do: :int.auto_attach(false)
@@ -163,45 +163,48 @@ defmodule Int do
     :int.auto_attach(flags, {mod, func, args})
   end
 
-
-# %%--------------------------------------------------------------------
-# %% stack_trace() -> Flag
-# %% stack_trace(Flag)
-# %%   Flag = all | true | no_tail | false
-# %%--------------------------------------------------------------------
+  @doc """
+  --------------------------------------------------------------------
+  stack_trace() -> Flag
+  stack_trace(Flag)
+    Flag = all | true | no_tail | false
+  --------------------------------------------------------------------
+  """
   def stack_trace(), do: :int.stack_trace()
 
   def stack_trace(true), do: :int.stack_trace(true)
   def stack_trace(flag), do: :int.stack_trace(flag)
 
-# %%--------------------------------------------------------------------
-# %% break(Mod, Line) -> ok | {error, break_exists}
-# %% delete_break(Mod, Line) -> ok
-# %% break_in(Mod, Func, Arity) -> ok | {error, function_not_found}
-# %% del_break_in(Mod, Function, Arity) -> ok | {error, function_not_found}
-# %% no_break()
-# %% no_break(Mod)
-# %% disable_break(Mod, Line) -> ok
-# %% enable_break(Mod, Line) -> ok
-# %% action_at_break(Mod, Line, Action) -> ok
-# %% test_at_break(Mod, Line, Function) -> ok
-# %% get_binding(Var, Bindings) -> {value, Value} | unbound
-# %% all_breaks() -> [Break]
-# %% all_breaks(Mod) -> [Break]
-# %%   Mod = atom()
-# %%   Line = integer()
-# %%   Func = atom() function name
-# %%   Arity = integer()
-# %%   Action = enable | disable | delete
-# %%   Function = {Mod, Func} must have arity 1 (Bindings)
-# %%   Var = atom()
-# %%   Bindings = Value = term()
-# %%   Break = {Point, Options}
-# %%     Point = {Mod, Line}
-# %%     Options = [Status, Action, null, Cond]
-# %%       Status = active | inactive
-# %%       Cond = null | Function
-# %%--------------------------------------------------------------------
+  @doc """
+  --------------------------------------------------------------------
+  break(Mod, Line) -> ok | {error, break_exists}
+  delete_break(Mod, Line) -> ok
+  break_in(Mod, Func, Arity) -> ok | {error, function_not_found}
+  del_break_in(Mod, Function, Arity) -> ok | {error, function_not_found}
+  no_break()
+  no_break(Mod)
+  disable_break(Mod, Line) -> ok
+  enable_break(Mod, Line) -> ok
+  action_at_break(Mod, Line, Action) -> ok
+  test_at_break(Mod, Line, Function) -> ok
+  get_binding(Var, Bindings) -> {value, Value} | unbound
+  all_breaks() -> [Break]
+  all_breaks(Mod) -> [Break]
+    Mod = atom()
+    Line = integer()
+    Func = atom() function name
+    Arity = integer()
+    Action = enable | disable | delete
+    Function = {Mod, Func} must have arity 1 (Bindings)
+    Var = atom()
+    Bindings = Value = term()
+    Break = {Point, Options}
+      Point = {Mod, Line}
+      Options = [Status, Action, null, Cond]
+        Status = active | inactive
+        Cond = null | Function
+  --------------------------------------------------------------------
+  """
   def break(mod, line) when is_atom(mod) and is_integer(line) do
     :int.break(mod, line)
   end
@@ -243,28 +246,33 @@ defmodule Int do
   def all_breaks(), do: :int.all_breaks()
   def all_breaks(mod) when is_atom(mod), do: :int.all_breaks(mod)
 
-
-# %%--------------------------------------------------------------------
-# %% snapshot() -> [{Pid, Init, Status, Info}]
-# %%   Pid = pid()
-# %%   Init = atom()  First interpreted function
-# %%   Status = idle | running | waiting | break | exit
-# %%   Info = {} | {Mod, Line} | ExitReason
-# %%     Mod = atom()
-# %%     Line = integer()
-# %%     ExitReason = term()
-# %%--------------------------------------------------------------------
+  @doc """
+  --------------------------------------------------------------------
+  snapshot() -> [{Pid, Init, Status, Info}]
+    Pid = pid()
+    Init = atom()  First interpreted function
+    Status = idle | running | waiting | break | exit
+    Info = {} | {Mod, Line} | ExitReason
+      Mod = atom()
+      Line = integer()
+      ExitReason = term()
+  --------------------------------------------------------------------
+  """
   def snapshot(), do: :int.snapshot()
 
-# %%--------------------------------------------------------------------
-# %% clear()
-# %%--------------------------------------------------------------------
+  @doc """
+  --------------------------------------------------------------------
+  clear()
+  --------------------------------------------------------------------
+  """
   def clear(), do: :int.clear()
 
-# %%--------------------------------------------------------------------
-# %% continue(Pid) -> ok | {error, not_interpreted}
-# %% continue(X, Y, Z) -> ok | {error, not_interpreted}
-# %%--------------------------------------------------------------------
+  @doc """
+  --------------------------------------------------------------------
+  continue(Pid) -> ok | {error, not_interpreted}
+  continue(X, Y, Z) -> ok | {error, not_interpreted}
+  --------------------------------------------------------------------
+  """
   def continue(pid) when is_pid(pid), do: :int.continue(pid)
   def continue(x, y, z) when is_integer(x) and is_integer(y) and is_integer(z), do: :int.continue(x, y, z)
 
@@ -273,83 +281,91 @@ defmodule Int do
 # %% External exports only to be used by Debugger
 # %%====================================================================
 
-# %%--------------------------------------------------------------------
-# %% start()
-# %% stop()
-# %% Functions for starting and stopping dbg_iserver explicitly.
-# %%--------------------------------------------------------------------
+  @doc """
+  --------------------------------------------------------------------
+  start()
+  stop()
+  Functions for starting and stopping dbg_iserver explicitly.
+  --------------------------------------------------------------------
+  """
   def start(), do: :int.start()
   def stop(),  do: :int.stop()
 
-
-# %%--------------------------------------------------------------------
-# %% subscribe()
-# %% Subscribe to information from dbg_iserver. The process calling this
-# %% function will receive the following messages:
-# %%   {int, {interpret, Mod}}
-# %%   {int, {no_interpret, Mod}}
-# %%   {int, {new_process, Pid, Function, Status, Info}}
-# %%   {int, {new_status, Pid, Status, Info}}
-# %%   {int, {new_break, {Point, Options}}}
-# %%   {int, {delete_break, Point}}
-# %%   {int, {break_options, {Point, Options}}}
-# %%   {int, no_break}
-# %%   {int, {no_break, Mod}}
-# %%   {int, {auto_attach, false|{Flags, Function}}}
-# %%   {int, {stack_trace, Flag}}
-# %%--------------------------------------------------------------------
+  @doc """
+  --------------------------------------------------------------------
+  subscribe()
+  Subscribe to information from dbg_iserver. The process calling this
+  function will receive the following messages:
+    {int, {interpret, Mod}}
+    {int, {no_interpret, Mod}}
+    {int, {new_process, Pid, Function, Status, Info}}
+    {int, {new_status, Pid, Status, Info}}
+    {int, {new_break, {Point, Options}}}
+    {int, {delete_break, Point}}
+    {int, {break_options, {Point, Options}}}
+    {int, no_break}
+    {int, {no_break, Mod}}
+    {int, {auto_attach, false|{Flags, Function}}}
+    {int, {stack_trace, Flag}}
+  --------------------------------------------------------------------
+  """
   def subscribe(), do: :int.subscribe()
 
-
-# %%--------------------------------------------------------------------
-# %% attach(Pid, Function)
-# %%   Pid = pid()
-# %%   Function = {Mod, Func} | {Mod, Func, Args} (see auto_attach/2)
-# %% Tell dbg_iserver to attach to Pid using Function. Will result in:
-# %%   spawn(Mod, Func, [Pid, Status | Args])
-# %%--------------------------------------------------------------------
+  @doc """
+  --------------------------------------------------------------------
+  attach(Pid, Function)
+    Pid = pid()
+    Function = {Mod, Func} | {Mod, Func, Args} (see auto_attach/2)
+  Tell dbg_iserver to attach to Pid using Function. Will result in:
+    spawn(Mod, Func, [Pid, Status | Args])
+  --------------------------------------------------------------------
+  """
   def attach(pid, {mod, func}), do: :int.attach(pid, {mod, func})
   def attach(pid, function),    do: :int.attach(pid, function)
 
-# %%--------------------------------------------------------------------
-# %% step(Pid)
-# %% next(Pid)
-# %% (continue(Pid))
-# %% finish(Pid)
-# %%--------------------------------------------------------------------
+  @doc """
+  --------------------------------------------------------------------
+  step(Pid)
+  next(Pid)
+  (continue(Pid))
+  finish(Pid)
+  --------------------------------------------------------------------
+  """
   def step(pid),   do: :int.step(pid)
   def next(pid),   do: :int.next(pid)
   def finish(pid), do: :int.finish(pid)
-
 
 # %%====================================================================
 # %% External exports only to be used by an attached process
 # %%====================================================================
 
-# %%--------------------------------------------------------------------
-# %% attached(Pid) -> {ok, Meta} | error
-# %%   Pid = Meta = pid()
-# %% Tell dbg_iserver that I have attached to Pid. dbg_iserver informs
-# %% the meta process and returns its pid. dbg_iserver may also refuse,
-# %% if there already is a process attached to Pid.
-# %%--------------------------------------------------------------------
+  @doc """
+  --------------------------------------------------------------------
+  attached(Pid) -> {ok, Meta} | error
+    Pid = Meta = pid()
+  Tell dbg_iserver that I have attached to Pid. dbg_iserver informs
+  the meta process and returns its pid. dbg_iserver may also refuse,
+  if there already is a process attached to Pid.
+  --------------------------------------------------------------------
+  """
   def attached(pid), do: :int.attached(pid)
 
-
-# %%--------------------------------------------------------------------
-# %% meta(Meta, Cmd)
-# %%   Meta = pid()
-# %%   Cmd = step | next | continue | finish | skip | timeout | stop
-# %%   Cmd = messages => [Message]
-# %% meta(Meta, Cmd, Arg)
-# %%   Cmd = trace,       Arg = bool()
-# %%   Cmd = stack_trace  Arg = all | notail | false
-# %%   Cmd = stack_frame  Arg = {up|down, Sp}
-# %%       => {Sp, Mod, Line} | top | bottom
-# %%   Cmd = backtrace    Arg = integer()
-# %%       => {Sp, Mod, {Func, Arity}, Line}
-# %%   Cmd = eval        Arg = {Cm, Cmd} | {Cm, Cmd, Sp}
-# %%--------------------------------------------------------------------
+  @doc """
+  --------------------------------------------------------------------
+  meta(Meta, Cmd)
+    Meta = pid()
+    Cmd = step | next | continue | finish | skip | timeout | stop
+    Cmd = messages => [Message]
+  meta(Meta, Cmd, Arg)
+    Cmd = trace,       Arg = bool()
+    Cmd = stack_trace  Arg = all | notail | false
+    Cmd = stack_frame  Arg = {up|down, Sp}
+        => {Sp, Mod, Line} | top | bottom
+    Cmd = backtrace    Arg = integer()
+        => {Sp, Mod, {Func, Arity}, Line}
+    Cmd = eval        Arg = {Cm, Cmd} | {Cm, Cmd, Sp}
+  --------------------------------------------------------------------
+  """
   def meta(meta, :step),        do: :int.meta(meta, :step)
   def meta(meta, :next),        do: :int.meta(meta, :next)
   def meta(meta, :continue),    do: :int.meta(meta, :continue)
@@ -366,23 +382,25 @@ defmodule Int do
   def meta(meta, :backtrace, n),      do: :int.meta(meta, :backtrace, n)
   def meta(meta, :eval, arg),         do: :int.meta(meta, :eval, arg)
 
-
-# %%--------------------------------------------------------------------
-# %% contents(Mod, Pid) -> string()
-# %%   Mod = atom()
-# %%   Pid = pid() | any
-# %% Return the contents of an interpreted module.
-# %%--------------------------------------------------------------------
+  @doc """
+  --------------------------------------------------------------------
+  contents(Mod, Pid) -> string()
+    Mod = atom()
+    Pid = pid() | any
+  Return the contents of an interpreted module.
+  --------------------------------------------------------------------
+  """
   def contents(mod, pid) do
     :int.contents(mod, pid)
   end
 
-
-# %%--------------------------------------------------------------------
-# %% functions(Mod) -> [[Name, Arity]]
-# %%   Mod = Name = atom()
-# %%   Arity = integer()
-# %%--------------------------------------------------------------------
+  @doc """
+  --------------------------------------------------------------------
+  functions(Mod) -> [[Name, Arity]]
+    Mod = Name = atom()
+    Arity = integer()
+  --------------------------------------------------------------------
+  """
   def functions(mod) do
     :int.functions(mod)
   end
