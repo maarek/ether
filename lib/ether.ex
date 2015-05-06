@@ -1,0 +1,2 @@
+defmodule Ether do
+end
