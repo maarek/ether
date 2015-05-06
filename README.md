@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/maarek/ether.svg?branch=master)](https://travis-ci.org/maarek/ether)
+
 Ether
 =====
 
