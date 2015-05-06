@@ -7,6 +7,17 @@ defmodule Ether.Mixfile do
      elixir: "~> 1.0",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+
+     # Docs
+     name: "Ether",
+     source_url: "https://github.com/maarek/ether",
+     homepage_url: "https://github.com/maarek/ether",
+
+     # Hex
+     description: description,
+     package: package,
+
+     # Dependencies
      deps: deps]
   end
 
@@ -28,5 +39,18 @@ defmodule Ether.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     []
+  end
+
+  defp description do
+    """
+    Elixir Debugger
+    """
+  end
+
+  defp package do
+    [files: ~w(lib mix.exs README.md LICENSE),
+     contributors: ["Jeremy Lyman"],
+     licenses: ["MIT"],
+     links: %{"GitHub" => "https://github.com/maarek/ether"}]
   end
 end
