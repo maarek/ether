@@ -426,11 +426,10 @@ defmodule Int do
 		      case check_beam(beamBin) do
 		        {:ok, exp, abst, _beamBin} ->
 			        load({mod, src, beam, beamBin, exp, abst}, dist)
-		        :error ->
-
+            :error ->
               :error
-		      end
-	      false ->
+          end
+        false ->
 		      :error
 	    end
     catch
