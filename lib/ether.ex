@@ -42,7 +42,12 @@ defmodule Ether do
   Loads the module
   Attaches the debugger to the process upon start
 
-  quick_start(module, function, args)
+  ## Examples
+
+      iex> quick_start(Integer, :to_string, [3])
+      "3"
+
+  quick_start(module, function, args) -> result
   """
   def quick_start(module, function, args) do
     start() # Start the debugger if it's not started already
